@@ -1,13 +1,33 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+
 const { rejectUnauthenticated } = require('../modules/authentication-middleware')
+
 
 /**
  * Get all of the items on the shelf
  */
-router.get('/', (req, res) => {
-  res.sendStatus(200); // For testing only, can be removed
+router.get('/', rejectUnauthenticated, (req, res) => {
+  const currentUserID = req.user.id;
+
+  const sqlQuery = `
+  SELECT * FROM "item"
+  WHERE "user_id"=$1
+  ORDER BY "id";
+  `
+
+  const sqlValues = [currentUserID];
+
+  pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+      res.send(dbRes.rows);
+    })
+    .catch((dbErr) => {
+      console.log('GET things failed:', dbErr);
+      res.sendStatus(500);
+    })
+     // For testing only, can be removed
 });
 
 /**
@@ -62,8 +82,31 @@ router.get('/count', (req, res) => {
 /**
  * Return a specific item by id
  */
-router.get('/:id', (req, res) => {
-  // endpoint functionality
-});
+
+
+// router.get('/:id', rejectUnauthenticated, (req, res) => {
+//   const currentUserID = req.user.id;
+
+//   const sqlQuery = `
+//   SELECT * FROM "item"
+//   WHERE "user_id"=$1
+//   ORDER BY "id";
+//   `
+
+//   const sqlValues = [currentUserID];
+
+//   pool.query(sqlQuery, sqlValues)
+//     .then((dbRes) => {
+//       res.send(dbRes.rows);
+//     })
+//     .catch((dbErr) => {
+//       console.log('GET things failed:', dbErr);
+//       res.sendStatus(500);
+//     })
+//      // For testing only, can be removed
+// });
+// router.get('/:id', (req, res) => {
+//   // endpoint functionality
+// });
 
 module.exports = router;
