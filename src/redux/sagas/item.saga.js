@@ -1,14 +1,14 @@
-import axios from "axios";
+import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
 function* fetchItems() {
     try {
-        const config = {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true,
-        };
+        // const config = {
+        //     headers: { 'Content-Type': 'application/json' },
+        //     withCredentials: true,
+        // };
 
-        const response = yield axios.get('/api/shelf', config);
+        const response = yield axios.get('/api/shelf');
 
         yield put({ type: 'SET_ITEM', payload: response.data });
     } catch (error) {
@@ -20,4 +20,4 @@ function* itemSaga() {
     yield takeLatest('FETCH_ITEM', fetchItems);
 }
 
-export default fetchItems; 
+export default itemSaga; 

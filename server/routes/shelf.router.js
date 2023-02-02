@@ -6,27 +6,27 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 /**
  * Get all of the items on the shelf
  */
-// router.get('/', rejectUnauthenticated, (req, res) => {
-//   const currentUserID = req.user.id;
+router.get('/', rejectUnauthenticated, (req, res) => {
+  const currentUserID = req.user.id;
 
-//   const sqlQuery = `
-//   SELECT * FROM "item"
-//   WHERE "user_id"=$1
-//   ORDER BY "id";
-//   `
+  const sqlQuery = `
+  SELECT * FROM "item"
+  WHERE "user_id"=$1
+  ORDER BY "id";
+  `
 
-//   const sqlValues = [currentUserID];
+  const sqlValues = [currentUserID];
 
-//   pool.query(sqlQuery, sqlValues)
-//     .then((dbRes) => {
-//       res.send(dbRes.rows);
-//     })
-//     .catch((dbErr) => {
-//       console.log('GET things failed:', dbErr);
-//       res.sendStatus(500);
-//     })
-//      // For testing only, can be removed
-// });
+  pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+      res.send(dbRes.rows);
+    })
+    .catch((dbErr) => {
+      console.log('GET things failed:', dbErr);
+      res.sendStatus(500);
+    })
+     // For testing only, can be removed
+});
 
 /**
  * Add an item for the logged in user to the shelf
@@ -62,27 +62,27 @@ router.get('/count', (req, res) => {
  */
 
 
-router.get('/:id', rejectUnauthenticated, (req, res) => {
-  const currentUserID = req.user.id;
+// router.get('/:id', rejectUnauthenticated, (req, res) => {
+//   const currentUserID = req.user.id;
 
-  const sqlQuery = `
-  SELECT * FROM "item"
-  WHERE "user_id"=$1
-  ORDER BY "id";
-  `
+//   const sqlQuery = `
+//   SELECT * FROM "item"
+//   WHERE "user_id"=$1
+//   ORDER BY "id";
+//   `
 
-  const sqlValues = [currentUserID];
+//   const sqlValues = [currentUserID];
 
-  pool.query(sqlQuery, sqlValues)
-    .then((dbRes) => {
-      res.send(dbRes.rows);
-    })
-    .catch((dbErr) => {
-      console.log('GET things failed:', dbErr);
-      res.sendStatus(500);
-    })
-     // For testing only, can be removed
-});
+//   pool.query(sqlQuery, sqlValues)
+//     .then((dbRes) => {
+//       res.send(dbRes.rows);
+//     })
+//     .catch((dbErr) => {
+//       console.log('GET things failed:', dbErr);
+//       res.sendStatus(500);
+//     })
+//      // For testing only, can be removed
+// });
 // router.get('/:id', (req, res) => {
 //   // endpoint functionality
 // });
