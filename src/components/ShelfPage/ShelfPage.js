@@ -1,4 +1,5 @@
 import React from 'react';
+import ShoppingForm from '../ShoppingForm/ShoppingForm';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,8 +13,10 @@ function ShelfPage() {
   }, [dispatch]);
 
 
+
   return (
     <div className="container">
+      <ShoppingForm />
       <h2>Shelf</h2>
       <ul>
         {
