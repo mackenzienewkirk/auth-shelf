@@ -18,13 +18,18 @@ function ShelfPage() {
     <div className="container">
       <ShoppingForm />
       <h2>Shelf</h2>
-      <ul>
+      
         {
           items.map((item) => {
-            return <li key={item.id}>{item.description}{item.image_url}</li>
+            return (
+              <div key={item.id}>
+                {item.description}
+                <img src={item.image_url}/>
+              </div>
+            )
           })
         }
-      </ul>
+      
     </div>
   );
 }
