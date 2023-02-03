@@ -68,8 +68,28 @@ router.delete('/:id', (req, res) => {
  * Update an item if it's something the logged in user added
  */
 router.put('/:id', (req, res) => {
-  // endpoint functionality
-});
+  
+    let idToUpdate = req.params.id;
+    let description =  req.body.description;
+    let urlUpdate = req.body.image_url;
+    
+    
+    let sqlQuery =`
+        UPDATE "item"
+            SET "description" = $1, "image_url" = $2
+            WHERE "id" = $3;
+    `
+    let sqlValues = [ description, urlUpdate, idToUpdate ]
+    pool.query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+        console.log('Serveside PUT', dbRes);
+        res.sendStatus(201)
+    }).catch(( dbErr)=>{
+        console.log('broke PUT DB', dbErr);
+        res.sendStatus(500)
+    })
+})
+
 
 /**
  * Return all users along with the total number of items

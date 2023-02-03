@@ -19,8 +19,10 @@ import ShelfPage from '../ShelfPage/ShelfPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import InfoPage from '../InfoPage/InfoPage';
 
 import './App.css';
+import logger from 'redux-logger';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +32,8 @@ function App() {
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
   }, [dispatch]);
+
+  
 
   return (
     <Router>
@@ -58,6 +62,14 @@ function App() {
             path="/user"
           >
             <UserPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            // logged in shows UserPage else shows LoginPage
+            exact
+            path="/info/:id"
+          >
+            <InfoPage />
           </ProtectedRoute>
 
           <ProtectedRoute
