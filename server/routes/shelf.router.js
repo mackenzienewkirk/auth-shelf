@@ -61,7 +61,43 @@ router.post('/', rejectUnauthenticated, (req, res) => {
  * Delete an item if it's something the logged in user added
  */
 router.delete('/:id', (req, res) => {
-  // endpoint functionality
+  // endpoint functionality 
+  console.log('in the delete route');
+  console.log('user:', req.user);
+  const idToDelete = req.params.id;
+  const sqlQuery = `
+    SELECT user_id FROM item
+      WHERE id = $1;
+  `;
+  const sqlValue = [idToDelete];
+  pool.query(sqlQuery, sqlValue)
+  .then((response) => {
+    const userId = response.rows[0].user_id;
+    console.log('userId:', userId);
+    console.log('req.user.id:', req.user.id);
+    if (userId === req.user.id) {
+      const sqlQueryTwo = `
+        DELETE FROM item
+          WHERE id = $1;
+      `;
+      const sqlValueTwo = [idToDelete];
+      pool.query(sqlQueryTwo, sqlValueTwo)
+        .then((res) => {
+          // res.sendStatus(200);
+        })
+        .catch((error) => {
+          console.log('error in /api/shelf DELETE', error);
+          res.sendStatus(500);
+        })
+    } else {
+      console.log('error: invalid user');
+      res.sendStatus(403);
+    }
+  })
+  .catch((err) => {
+    console.log('err in /api/shelf delete', err);
+    res.sendStatus(500);
+  })
 });
 
 /**
